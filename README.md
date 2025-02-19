@@ -1,6 +1,6 @@
-# 📌 IA Athletica Prime - Assistente Virtual para WhatsApp  
+# 🤖 Ana - Assistente Virtual da Athletica Prime  
 
-**IA Athletica Prime** é um assistente virtual desenvolvido no **n8n** para responder dúvidas de clientes da academia **Athletica Prime** via **WhatsApp**. Ele utiliza **integração com IA (OpenAI)** para fornecer respostas precisas e personalizadas com base em uma **base de conhecimento predefinida**.  
+**Ana** é um assistente virtual desenvolvido no **n8n** para atender clientes da **Athletica Prime** via **WhatsApp**. Utilizando **inteligência artificial (OpenAI)**, ela responde dúvidas de forma precisa e amigável, baseada em uma **base de conhecimento predefinida**.  
 
 ## 🚀 Funcionalidades  
 - ✅ Responde perguntas sobre **horários, planos, estrutura e aulas**  
@@ -24,3 +24,4 @@
 💡 **Ideal para academias e negócios que desejam automatizar o atendimento no WhatsApp com IA!**  
 
 ⚡ **Quer contribuir?** Fork este repositório e ajude a melhorar o projeto! 🚀
+

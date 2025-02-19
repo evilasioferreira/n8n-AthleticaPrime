@@ -1,0 +1,1055 @@
+{
+  "name": "ia_Athletica Prime",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e0cd5db1-dc98-46ee-8ba7-4e9280bb4459",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        180
+      ],
+      "id": "169022e6-5b8a-4428-875f-e17b0207261e",
+      "name": "Webhook",
+      "webhookId": "e0cd5db1-dc98-46ee-8ba7-4e9280bb4459"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "410f9a97-06c1-4149-a2b8-1129e162dbd1",
+              "name": "data.remoteJid",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "71c9a659-13b5-4562-938e-7db713ba9dbb",
+              "name": "data.fromMe",
+              "value": "={{ $json.body.data.key.fromMe }}",
+              "type": "boolean"
+            },
+            {
+              "id": "3db6cc3a-348f-45e9-a8bb-c1e3f53557a5",
+              "name": "data.Id",
+              "value": "={{ $json.body.data.key.id }}",
+              "type": "string"
+            },
+            {
+              "id": "70f405e9-6c19-4e59-94fa-51d14fd7aeba",
+              "name": "data.Text",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b79a7ade-d2c0-4aec-9e72-5944ac238bf7",
+              "name": "data.messageType",
+              "value": "={{ $json.body.data.messageType }}",
+              "type": "string"
+            },
+            {
+              "id": "2ebf5b4d-c668-40c2-bb96-88e1eccf0e13",
+              "name": "data.Source",
+              "value": "={{ $json.body.data.source }}",
+              "type": "string"
+            },
+            {
+              "id": "1cb9522c-b2f7-479e-a0e3-d450a3802b97",
+              "name": "evo.server_url",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "84dcaed1-7297-46f7-838a-9faf20b1334c",
+              "name": "evo.instance",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "ccfb5cc8-9eae-4c34-af7b-590e6aa1e382",
+              "name": "evo.apikey",
+              "value": "={{ $json.body.apikey }}",
+              "type": "string"
+            },
+            {
+              "id": "e185d705-da29-4eb2-99be-358570538c82",
+              "name": "data.mediaUrl",
+              "value": "={{ $json.body.data.message.mediaUrl }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1180,
+        180
+      ],
+      "id": "c57fe321-7876-4e3a-b8cd-444ae78a01de",
+      "name": "Dados manipulados"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8bec407a-1cac-4716-abe3-3ed9c8895ce8",
+              "leftValue": "={{ $json.data.remoteJid }}",
+              "rightValue": "@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1020,
+        180
+      ],
+      "id": "97b1458e-8a82-435d-a524-d84ef4c57f0d",
+      "name": "Filtra grupo"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Dados manipulados').item.json.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "137c5a27-ee8f-4478-8110-4591a9df172d",
+                    "leftValue": "={{ $('Dados manipulados').item.json.data.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b87a8d85-7130-4dca-b217-5f464481086a",
+                    "leftValue": "={{ $('Dados manipulados').item.json.data.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -660,
+        180
+      ],
+      "id": "f7a2ca45-74ad-4e01-84e9-ab1ba7eda61c",
+      "name": "TipodeMensagem"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "777e7102-72ab-49ab-95f6-db7a86976dec",
+              "leftValue": "={{ $('Dados manipulados').item.json.data.fromMe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -880,
+        180
+      ],
+      "id": "ad2b0154-14e2-4f5a-8fb7-f3fa7f2b65a5",
+      "name": "fromMe"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "Message1",
+        "key": "={{ $('Dados manipulados').item.json.data.remoteJid }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        120,
+        180
+      ],
+      "id": "6d23e9bc-d0a9-4477-a60c-1c7c283695fa",
+      "name": "Get Memory 1",
+      "credentials": {
+        "redis": {
+          "id": "wYssoXxyV4puf4x4",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 8
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        180
+      ],
+      "id": "ebe9a563-b963-4c6b-9c3d-bc1f7323e580",
+      "name": "Wait",
+      "webhookId": "618d3ed0-a19c-4016-907c-008a65a7f721"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "Message2",
+        "key": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        420,
+        180
+      ],
+      "id": "e4850c4f-599a-445a-8e38-c69122a9f6ac",
+      "name": "Get Memory 2",
+      "credentials": {
+        "redis": {
+          "id": "wYssoXxyV4puf4x4",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.combinedText2 }}",
+        "options": {
+          "systemMessage": "👋 Olá! Você é \"Ana\", assistente virtual da **Athletica Prime**, uma academia de musculação e ginástica. Seu objetivo é responder às dúvidas dos clientes no WhatsApp de forma clara, objetiva e empática, usando apenas as informações da \"Base de Conhecimento\".  \n\n📌 **IMPORTANTE:**  \n- **Nunca invente respostas.** Use apenas as informações da Base de Conhecimento.  \n- **Responda de forma curta e direta,** como esperado em conversas de WhatsApp.  \n- **Seja amigável e profissional.** Demonstre interesse e seja prestativo.  \n- **Se um cliente agir de maneira desrespeitosa,** avise educadamente que não poderá continuar a conversa.  \n- **Convide ocasionalmente o cliente para um treino grátis ou para conhecer mais sobre os planos.**  \n- **Não pergunte o nome do cliente, a menos que seja essencial.**  \n\n---\n\n### 🚀 **Início da Conversa (Apenas uma vez)**  \nSe for o **primeiro contato**, inicie com:  \n\n*\"Olá! Me chamo Ana, sou assistente virtual da Athletica Prime. Como posso te ajudar hoje?\"*  \n\nNas mensagens seguintes, **responda direto ao ponto** sem repetir essa introdução.  \n\n---\n\n### 🏋️ **Principais Funções do Assistente**  \n\n1️⃣ **Horário de Funcionamento**  \n- Segunda a Sexta: 6h - 22h  \n- Sábado: 8h - 18h  \n- Domingo e Feriados: 9h - 14h  \n\n📌 Se perguntarem sobre **horários especiais**, mencione que existem horários personalizados para treinos individuais e aulas particulares.  \n\n---\n\n2️⃣ **Planos e Mensalidades**  \n- **Plano Mensal:** R$ 199,00/mês (acesso a todos os equipamentos + 3 aulas semanais em grupo)  \n- **Plano Semestral:** R$ 999,00 (mesmo acesso do plano mensal)  \n- **Plano Anual:** R$ 1.899,00 (acesso total + aulas em grupo ilimitadas)  \n- **Plano Premium:** R$ 2.399,00/ano (acesso VIP, personal trainer e lounge exclusivo)  \n\n📌 Se perguntarem sobre **descontos**, informe que há descontos especiais para **estudantes e idosos**.  \n\n---\n\n3️⃣ **Estrutura e Equipamentos**  \n- Academia moderna com **musculação, cardio, pilates, yoga, spinning e treinamento funcional**.  \n- **Piscina aquecida** para natação e hidroginástica.  \n- **Espaço Kids** para crianças, enquanto os pais treinam.  \n- **Lounge e Café** com lanches saudáveis.  \n- **Aplicativo exclusivo** para acompanhar treinos e agenda de aulas.  \n\n📌 Se o cliente perguntar sobre **equipamentos específicos**, consulte a Base de Conhecimento antes de responder.  \n\n---\n\n4️⃣ **Aulas Disponíveis**  \n- **Em Grupo:** Yoga, Pilates, Spinning, Zumba, Cross Training, Hidroginástica, Treinamento Funcional.  \n- **Individuais:** Personal Trainer e Natação.  \n\n📌 Se perguntarem sobre disponibilidade, sugira que consultem a recepção para confirmar horários.  \n\n---\n\n5️⃣ **Contato e Localização**  \n📞 Telefone: (11) 98765-4321  \n📧 E-mail: contato@athleticaprime.com.br  \n🌐 Website: [www.athleticaprime.com.br](http://www.athleticaprime.com.br)  \n📍 Endereços:  \n- São Paulo: Avenida Central, 1234, Bairro Novo.  \n- Fortaleza: Avenida Beira Mar, 1234, Bairro Antigo.  \n- João Pessoa: Avenida Central, 1234, Bairro Centro.  \n\n📌 Se perguntarem sobre redes sociais, informe:  \n- Instagram: [@athleticaprime](https://www.instagram.com/athleticaprime)  \n- Facebook: [Athletica Prime](https://www.facebook.com/athleticaprime)  \n- YouTube: [Athletica Prime Oficial](https://www.youtube.com/c/athleticaprime)  \n\n---\n\n6️⃣ **Convites e Promoções**  \n💪 **Convide clientes a conhecer a academia:**  \n*\"Que tal uma aula grátis para conhecer nossa estrutura? Me avise se quiser agendar!\"*  \n\n🎯 **Sugira um plano:**  \n*\"Se quiser mais informações sobre os planos, posso te ajudar a escolher o melhor para você!\"*  \n\n---\n\n7️⃣ **Higiene e Segurança**  \n- Aparelhos higienizados diariamente.  \n- Álcool em gel disponível.  \n- Controle do número de alunos por aula.  \n- **Obrigatório atestado médico para treinos intensivos.**  \n\n📌 Se perguntarem sobre restrições, informe que **pets e armas de fogo são proibidos** dentro das unidades.  \n\n---\n\n8️⃣ **Encerramento de Conversa**  \nSe o cliente for rude ou desrespeitoso, responda de forma educada:  \n\n*\"Peço desculpas, mas não posso continuar essa conversa se não houver respeito. Caso precise de ajuda, estou à disposição!\"*  \n\n---\n\n### 🚀 **Como Usar no n8n**  \n1. Adicione um **AI Agent Node** no seu fluxo.  \n2. No campo **System Message**, cole esse texto.  \n3. Conecte o AI Agent ao fluxo do WhatsApp.  \n\nEsse **System Message** torna o **AI Agent** mais **eficiente, profissional e natural**, garantindo uma excelente experiência para os clientes da **Athletica Prime**. 💪🔥  \n\nSe precisar de ajustes, me avise! 🚀\n\n",
+          "maxIterations": 2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        980,
+        140
+      ],
+      "id": "7187fc44-7896-4951-8cc4-7a3c822edb28",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        980,
+        440
+      ],
+      "id": "97490caa-eb72-4b84-b039-22795b0cfebd",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "3t9EzbemEgbTM58R",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "{{ $('Dados manipulados').item.json.data.remoteJid }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        820
+      ],
+      "id": "7ecc4d37-2a3a-4566-bb80-55981a1343d2",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "wYssoXxyV4puf4x4",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Dados manipulados').item.json.evo.server_url }}/message/sendText/{{ $('Dados manipulados').item.json.evo.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Dados manipulados').item.json.evo.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Dados manipulados').item.json.data.remoteJid }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json['[\\'AI Agent\\'].output'] }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{ 2000 }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -480,
+        820
+      ],
+      "id": "86e4efce-8b36-45ff-86a8-b5c26644c3b2",
+      "name": "Send Text"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "{{ $('Webhook').item.json.body.data.key.remoteJid }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1160,
+        480
+      ],
+      "id": "db88ff32-238f-4b08-be0c-c250204f9dde",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtém os dados dos nós \"Get Memory 1\" e \"Get Memory 2\"\nconst message1Array = $('Get Memory 1').item.json?.Message1 ?? [];\nconst message2Array = $('Get Memory 2').item.json?.Message2 ?? [];\n\n// Verifica se são arrays antes de processar\nconst combinedText1 = Array.isArray(message1Array) ? message1Array.join(' ') : String(message1Array);\nconst combinedText2 = Array.isArray(message2Array) ? message2Array.join(' ') : String(message2Array);\n\n// Retorna os valores corretamente no formato JSON\nreturn [\n  {\n    json: {\n      combinedText1,\n      combinedText2\n    }\n  }\n];\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        580,
+        180
+      ],
+      "id": "a327a814-a7b1-46c9-8bee-240f58ba1702",
+      "name": "Combine Text"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bd359baa-cee8-4fd0-9d59-3b8a31550596",
+              "leftValue": "={{ $json.combinedText1 }}",
+              "rightValue": "={{ $json.combinedText2 }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        740,
+        180
+      ],
+      "id": "d4e1a168-e3c5-4357-855b-f21cf7a32b3d",
+      "name": "Compare Memories"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados manipulados').item.json.data.remoteJid }}",
+        "messageData": "={{ $json.text }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        180
+      ],
+      "id": "9ee91f3c-46a0-4a7c-9bc2-6af70a15ab65",
+      "name": "Audio Memory",
+      "credentials": {
+        "redis": {
+          "id": "wYssoXxyV4puf4x4",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Dados manipulados').item.json.data.mediaUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -460,
+        180
+      ],
+      "id": "80370cdd-2e07-442b-b718-40b3e1082106",
+      "name": "PegarAudio"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados manipulados').item.json.data.remoteJid }}",
+        "messageData": "={{ $('Dados manipulados').item.json.data.Text }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -20
+      ],
+      "id": "e2693970-a62f-45ad-8229-6708af61ed21",
+      "name": "Text Memory",
+      "credentials": {
+        "redis": {
+          "id": "wYssoXxyV4puf4x4",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -280,
+        180
+      ],
+      "id": "ef8238d1-1a08-4c8a-833f-c859ae682396",
+      "name": "Transcrever",
+      "credentials": {
+        "openAiApi": {
+          "id": "3t9EzbemEgbTM58R",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados manipulados').item.json.data.remoteJid }}",
+        "messageData": "={{ $json.content }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        380
+      ],
+      "id": "144d8356-0fad-49e7-b095-da699bb40e29",
+      "name": "Image Memory",
+      "credentials": {
+        "redis": {
+          "id": "wYssoXxyV4puf4x4",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "O que tem na imagem?",
+        "imageUrls": "={{ $('Filtra grupo').item.json.data.mediaUrl }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -360,
+        380
+      ],
+      "id": "f734d8c4-909b-4a0f-9038-39321a076990",
+      "name": "Analyse Image",
+      "credentials": {
+        "openAiApi": {
+          "id": "3t9EzbemEgbTM58R",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5c7a14a-d76e-4eaf-b55c-4d03752cae3d",
+              "name": "AI Agent.output",
+              "value": "={{ $('AI Agent').item.json.output.split(\"\\n\\n\") }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1100,
+        820
+      ],
+      "id": "e430c153-f903-460e-8586-9ff62f79acba",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "['AI Agent'].output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -920,
+        820
+      ],
+      "id": "faac1135-b3d0-4f0f-845a-c4cc2cb14d03",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -740,
+        820
+      ],
+      "id": "72ac9dda-8b75-4fb7-a884-ee4cb901f55e",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        920
+      ],
+      "id": "0e32f735-2a9c-4e75-8207-ee11d7b162e4",
+      "name": "Wait1",
+      "webhookId": "0e6a2f35-b984-497e-aaf3-20d0a310e6a3"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "content-type": "application/json",
+            "user-agent": "axios/1.7.7",
+            "content-length": "3018",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "5.161.183.128:5678",
+            "connection": "keep-alive"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "Bot IA",
+            "data": {
+              "key": {
+                "remoteJid": "558598286557@s.whatsapp.net",
+                "fromMe": false,
+                "id": "1EF0A455669B9CAA377E70E5D387F31E"
+              },
+              "pushName": "Evilásio Ferreira",
+              "message": {
+                "imageMessage": {
+                  "url": "https://mmg.whatsapp.net/v/t62.7118-24/40760988_608291688841213_2513268436115879368_n.enc?ccb=11-4&oh=01_Q5AaIMXypyAHOdUYcj61_pIyaS5YENz09thJ3o-0lZq9rKM3&oe=67D9A9C2&_nc_sid=5e03e0&mms3=true",
+                  "mimetype": "image/jpeg",
+                  "fileSha256": "/4XRXinemSu5LR24aKLw3mRxsgf1N7VFGOETSsEldYU=",
+                  "fileLength": "100817",
+                  "height": 1600,
+                  "width": 1200,
+                  "mediaKey": "n8QV1Sq3rVr76SowA3wgvvv7HHYFIZpHSm1FAetezNY=",
+                  "fileEncSha256": "0LFOIx4rRPMnDBA1fe9zyMds77zDYN9yhUeK4d2ifFk=",
+                  "directPath": "/v/t62.7118-24/40760988_608291688841213_2513268436115879368_n.enc?ccb=11-4&oh=01_Q5AaIMXypyAHOdUYcj61_pIyaS5YENz09thJ3o-0lZq9rKM3&oe=67D9A9C2&_nc_sid=5e03e0",
+                  "mediaKeyTimestamp": "1739732141",
+                  "jpegThumbnail": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z//////////////8BGxsbGxwbHiEhHiotKC0qPTgzMzg9XUJHQkdCXY1YZ1hYZ1iNfZd7c3uXfeCwnJyw4P/Zztn////////////////CABEIAD4ALgMBIgACEQEDEQH/xAAuAAADAQEBAAAAAAAAAAAAAAACAwQFAQABAAMBAAAAAAAAAAAAAAAAAAECAwD/2gAMAwEAAhADEAAAANBwlh0er2PyQ2pmPJJ034HqLrGiybRoa1KRq1AdGLXGA9LTleXh9ec6uaJX/8QAIxAAAgIBBAICAwAAAAAAAAAAAQIAAxEEEiExEBNBURQkUv/aAAgBAQABPwColkUnvzmEzeog8tkRicCFCR34tvCiU35O1jGIweZ+QnRUwXVn5lrlRLCzPkDIEZrO1GBFscnkmaQBt4M9afyJa5IJlOmNgLkkCPVw3JGJp61uYhjiUVGrPOQZfrEpOMZMbGJQxFZA+562YcjuVaatCSrGam81YROzLq9ygjkxjDU55DET9gHHsMtudFwrEn5Ma3coJOTBdYOFMHcJwJu3Ntj1ACWJsYAfMopWtfsmf//EABwRAQABBAMAAAAAAAAAAAAAAAEAAhASURETYf/aAAgBAgEBPwC9JlVxOv2MoUZk7i7gwt//xAAZEQADAQEBAAAAAAAAAAAAAAAAAREQAjH/2gAIAQMBAT8A3xWFGdJRIhBjz//Z",
+                  "scansSidecar": "FcdV/OmzpNaxhjL+kufsC1mHHJB9YALAwGI19Sq4kIkLuAkAQW57LQ==",
+                  "scanLengths": [
+                    15088,
+                    40131,
+                    15009,
+                    30589
+                  ],
+                  "midQualityFileSha256": "Xp37Ik2kalgf5yQSsBh1sCqajfVZfoz9bM43nsUCMIk="
+                },
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "1NLmTZ6CBBcwkg==",
+                    "senderTimestamp": "1739575525",
+                    "recipientKeyHash": "+nj41JELhvf/SA==",
+                    "recipientTimestamp": "1738574607"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "8JQDpNF9OJH802xTSUK+7eWr2TyxmKBoCDLk/AsGCKc="
+                },
+                "mediaUrl": "https://mp.evilasio.online/evolution/evolution-api/d81d6f92-9c55-49c3-b7fe-168e3dda06f0/558598286557%40s.whatsapp.net/imageMessage/1EF0A455669B9CAA377E70E5D387F31E.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=5zhxr4rmz4of%2F20250216%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20250216T185544Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=5bd87f1c3f90b832e0c95c8a19fda50a97f7ae96376ea67036d577ec15f1b29a"
+              },
+              "contextInfo": null,
+              "messageType": "imageMessage",
+              "messageTimestamp": 1739732144,
+              "instanceId": "d81d6f92-9c55-49c3-b7fe-168e3dda06f0",
+              "source": "android"
+            },
+            "destination": "http://5.161.183.128:5678/webhook/e0cd5db1-dc98-46ee-8ba7-4e9280bb4459",
+            "date_time": "2025-02-16T15:55:44.400Z",
+            "sender": "558596760347@s.whatsapp.net",
+            "server_url": "https://evoapi.evilasio.online",
+            "apikey": "E0D8F193FA55-4944-9BF0-0F638FC4B29C"
+          },
+          "webhookUrl": "http://5.161.183.128:5678/webhook/e0cd5db1-dc98-46ee-8ba7-4e9280bb4459",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados manipulados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados manipulados": {
+      "main": [
+        [
+          {
+            "node": "Filtra grupo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtra grupo": {
+      "main": [
+        [
+          {
+            "node": "fromMe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TipodeMensagem": {
+      "main": [
+        [
+          {
+            "node": "Text Memory",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PegarAudio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Analyse Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "fromMe": {
+      "main": [
+        [],
+        [
+          {
+            "node": "TipodeMensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Memory 1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Memory 2": {
+      "main": [
+        [
+          {
+            "node": "Combine Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Text": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Text": {
+      "main": [
+        [
+          {
+            "node": "Compare Memories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Memories": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Memory": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PegarAudio": {
+      "main": [
+        [
+          {
+            "node": "Transcrever",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Memory": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcrever": {
+      "main": [
+        [
+          {
+            "node": "Audio Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image Memory": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyse Image": {
+      "main": [
+        [
+          {
+            "node": "Image Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0409c993-4f34-49c8-84d1-b63be3c49294",
+  "meta": {
+    "instanceId": "c3e32651c53c4f90284fa8f787a8ae933348647f3f850e837bd6e72e5fb04f70"
+  },
+  "id": "UIz4BBGqJeN2qiuZ",
+  "tags": []
+}
